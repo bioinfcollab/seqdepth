@@ -1,6 +1,3 @@
-
-# Table of Contents
-
 1.  [Runninng demo](#org4259da5)
 2.  [Plotting](#org3d2ce7b)
 3.  [params.yaml](#orge628284)
@@ -11,12 +8,14 @@
 # Runninng demo
 
 The code in this repository intended to run on a Linux based machine with
-up-to-date nextflow[0] and singularity-ce[1].
-For the installation instructions see the corresponding links.
+up-to-date nextflow and singularity-ce.
+For the installation instructions see the corresponding links:
+ - https://github.com/nextflow-io/nextflow
+ - https://sylabs.io/singularity/
 
 The container with all the neccessary software can be build if the host machine
-has enought privileges with make build<sub>container</sub>
-Alternatively it can be downloaded with make download<sub>container</sub> command.
+has enought privileges with make build container
+Alternatively it can be downloaded with make download container command.
 
 Running a demo (assuming that singularity and nextflow with java, wget, make, git and other tools are present):
 ```
