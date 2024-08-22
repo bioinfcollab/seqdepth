@@ -21,8 +21,7 @@ Running a demo (assuming that singularity and nextflow with java, wget, make, gi
 mkdir /tmp/demo && cd /tmp/demo
 git clone <https://github.com/bioinfcollab/seqdepth>
 cd seqdepth
-make download<sub>container</sub>
-
+make download_container
 make test
 ```
 
