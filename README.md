@@ -19,20 +19,20 @@ has enought privileges with make build<sub>container</sub>
 Alternatively it can be downloaded with make download<sub>container</sub> command.
 
 Running a demo (assuming that singularity and nextflow with java, wget, make, git and other tools are present):
-
+```
 mkdir /tmp/demo && cd /tmp/demo
 git clone <https://github.com/bioinfcollab/seqdepth>
 cd seqdepth
 make download<sub>container</sub>
 
 make test
-
+```
 
 <a id="org3d2ce7b"></a>
 
 # Plotting
 
-<code>
+```
 singularity exec -B $PWD containers/seqdepth.sif Rscript scripts/plotting.r --help
 Uage: scripts/plotting.r [options]
 
@@ -54,22 +54,20 @@ Options:
 
         -h, --help
                 Show this help message and exit
-</code>
-
-
+```
 Example:
 
-<code>
+```
 mkdir /tmp/plot
 singularity exec -B $PWD containers/seqdepth.sif Rscript scripts/plotting.r --crm 19 --position 51417359 --datadir "results/hypergeometric/" -t hypergeom --outputdir /tmp/plot
-<code>
+```
 
 
 <a id="orge628284"></a>
 
 # params.yaml
 
-<code>
+```
 # yaml file, use a text editor!
 # validate: perl -MYAML -e 'use YAML;YAML::LoadFile("./params.yaml")'
 
@@ -111,4 +109,4 @@ task:
 #cureentTotalDepth:
 #minAcceptedProb:
 #tocheck:
-</code>
+```
