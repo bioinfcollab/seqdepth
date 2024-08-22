@@ -19,7 +19,7 @@ Alternatively the container can be downloaded with `make download_container` com
 Running a demo (assuming that singularity and nextflow with java, wget, make, git and other tools are present):
 ```
 mkdir /tmp/demo && cd /tmp/demo
-git clone <https://github.com/bioinfcollab/seqdepth>
+git clone https://github.com/bioinfcollab/seqdepth
 cd seqdepth
 make download_container
 make test
