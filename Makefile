@@ -13,8 +13,7 @@ endif
 bold := $(shell tput bold)
 sgr0 := $(shell tput sgr0)
 
-REQBIN    := singularity nextflow
-REQBIN_download   := wget
+REQBIN    := singularity nextflow wget
 
 .PHONY: default
 default: info;
@@ -50,7 +49,7 @@ endif
 	@test -d $(SINGULARITY_TMPDIR) && rm -rf $(SINGULARITY_TMPDIR)
 
 download_container:
-	$(foreach bin,$(REQBIN_download),\
+	$(foreach bin,$(REQBIN),\
 		$(if $(shell command -v $(bin) 2> /dev/null),,$(error `$(bin)` is missing, aborting...)))
 	wget -O containers/seqdepth.sif https://sharing.biotec.tu-dresden.de/index.php/s/bxPbyoEctgsfMDc/download
 
