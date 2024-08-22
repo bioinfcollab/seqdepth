@@ -59,11 +59,13 @@ ifndef container
 endif
 	$(info $(bold)Running nextflow pipeline$(sgr0))
 	nextflow run main.nf -profile local -w $(NF_TMPDIR) --datadir $(TMP_DATADIR) --outdir $(NF_TMPDIR)/result --container $(container) --temp $(NF_TMPDIR) --hpcproject test --containerOptions --task hypergeometric --split 10
+	@find $(NF_TMPDIR)/result -print
+	@echo "don't forget to cleanup $(TMP_DATADIR) $(NF_TMPDIR)"
 
 .PHONY: clean
 clean:
 	$(info $(bold)Cleanup temporary data$(sgr0))
-	@echo "Cleaning ${TMP_DATADIR} and ${NF_TMPDIR}"
+	@echo "Cleaning $(TMP_DATADIR) and $(NF_TMPDIR)"
 	@test -d $(TMP_DATADIR) && rm -rf $(TMP_DATADIR)
 	@test -d $(NF_TMPDIR) && rm -rf $(NF_TMPDIR)
 
@@ -73,4 +75,4 @@ ifeq ("$(wildcard $(container))","")
 	$(info example: $(bold)make test CONTAINER=/full/path/to/singularity_container$(sgr0))
 	$(error $(bold)CONTAINER$(sgr0) env var is not set)
 endif
-	$(MAKE) gendata runtest clean
+	$(MAKE) gendata runtest
