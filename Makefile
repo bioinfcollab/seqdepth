@@ -50,7 +50,7 @@ endif
 	@test -d $(SINGULARITY_TMPDIR) && rm -rf $(SINGULARITY_TMPDIR)
 
 download_container:
-	$(foreach bin,$(REQBIN),\
+	$(foreach bin,$(REQBIN_download),\
 		$(if $(shell command -v $(bin) 2> /dev/null),,$(error `$(bin)` is missing, aborting...)))
 	wget -O containers/seqdepth.sif https://sharing.biotec.tu-dresden.de/index.php/s/bxPbyoEctgsfMDc/download
 
