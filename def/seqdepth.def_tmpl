@@ -2,7 +2,6 @@ bootstrap: docker
 From: debian:bookworm
 
 %files
- #seqdepth_scripts_location='/home/sysadm/devel/SeqDepth'
  <seqdepth_scripts> /usr/local/tmp/
 
 %post
@@ -13,8 +12,6 @@ From: debian:bookworm
     apt install -y --no-install-recommends --no-install-suggests wget ca-certificates curl wget \
         r-base-core \
 	r-cran-ggplot2 r-cran-optparse r-cran-r.utils r-cran-ggthemes
-    #apt remove -y manpages-dev manpages  r-base-dev libc-devtools  libc6-dev:amd64  dpkg-dev
-    #apt-get -y autoremove
     apt install -y --no-install-recommends --no-install-suggests \
         liblist-compare-perl \
         libparallel-forkmanager-perl \
