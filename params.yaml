@@ -1,0 +1,41 @@
+# yaml file, use a text editor!
+# validate: perl -MYAML -e 'use YAML;YAML::LoadFile("./params.yaml")'
+
+# datadir: path to bam or bed files, in case when data files are distributed
+# over directory structure, use symlinks to create a directory pointing to
+# specific set of files from a dataset
+datadir:                /evo/testing/bamfiles
+# outdir: directory with the  results
+outdir:                 /evo/testing/results
+# seqdepth singularity container with scripts and tools
+container:              /evo/singularity/seqdepth/seqdepth_bullseye
+# singularity container options, for example bind mounts '-B /lustre'
+containerOptions:
+# temporary directory, must be big enough for the results, can be also set
+# via TMPDIR env variable
+temp:                   '/tmp/test'
+# Defines on how many parts a single bed file will be split,
+# affects pipeline concurency, since every part will be processed
+# as a separate task
+# the size of the part is determined as 250000000/split
+# thus the maxpossiblepostitions must be divisible on the split number
+split:                  5
+# number of processes for per task
+nproc:                  8
+# If defined only a specific chromosome will be extracted and processed
+# if not set, the range 1..22, X, Y is assumed
+chromosome:             6
+# some bam files come with chr prefix, other without,
+# check with samtools idxstat what is the correct prefix for the
+# current dataset
+# current pipeline code is aware only of 'chr' prefix
+chrom_prefix:
+# optinal, needed for a slurm cluster
+hpcproject:             p_drug
+# by default only median, second option hypergeometric
+task:
+## hypergeometric calcucation parameters
+#minDepth:
+#cureentTotalDepth:
+#minAcceptedProb:
+#tocheck:

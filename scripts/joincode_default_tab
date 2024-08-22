@@ -1,0 +1,7 @@
+#!/bin/bash
+set -euo pipefail
+hypergeometric_result="$1"
+gtf_file="$2"
+result_prefix=`echo $gtf_file | sed s/.gz//`
+# do not join unpairable lines from the gtf file
+join -j 1 -t$'	' -a 1 <( gzip -fdc "$hypergeometric_result" | cut -f2- |sort -k 1b,1 ) <( gzip -fdc "$gtf_file" | sort -k 1b,1 ) |sort -nk1 | pigz -p2  >"$result_prefix"_merge.txt.gz

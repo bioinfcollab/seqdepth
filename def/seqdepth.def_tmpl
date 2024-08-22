@@ -1,0 +1,48 @@
+bootstrap: docker
+From: debian:bookworm
+
+%files
+ #seqdepth_scripts_location='/home/sysadm/devel/SeqDepth'
+ <seqdepth_scripts> /usr/local/tmp/
+
+%post
+    export DEBIAN_FRONTEND=noninteractive
+    apt update
+    apt --no-install-recommends --no-install-suggests -y install gnupg
+    mkdir -p /etc/apt/keyrings
+    apt install -y --no-install-recommends --no-install-suggests wget ca-certificates curl wget \
+        r-base-core \
+	r-cran-ggplot2 r-cran-optparse r-cran-r.utils r-cran-ggthemes
+    #apt remove -y manpages-dev manpages  r-base-dev libc-devtools  libc6-dev:amd64  dpkg-dev
+    #apt-get -y autoremove
+    apt install -y --no-install-recommends --no-install-suggests \
+        liblist-compare-perl \
+        libparallel-forkmanager-perl \
+        libtext-csv-perl \
+        libmath-gsl-perl \
+        libgetopt-long-descriptive-perl \
+        libstatistics-basic-perl \
+        libmce-perl \
+        libperlio-gzip-perl \
+        libsys-cpu-perl
+    apt install -y --no-install-recommends --no-install-suggests bedtools tabix pigz procps samtools file strace gzip less parallel time make
+    apt-get clean
+    for f in  median.pl  check_chr.sh  samples_table.pl gentestfiles.sh  hypergeometric.pl split_gtf_per_chr.pl expand_gtf.pl joincode_default_tab; do ln -s /usr/local/tmp/scripts/${f} /usr/local/bin/${f}; done
+    chmod +x /usr/local/bin/*.pl
+    chmod +x /usr/local/bin/*.sh
+
+%environment
+    export LC_ALL=C
+%test
+
+%labels
+    SeqDepth scripts and tools from Debian bookworm
+
+%runscript
+    /usr/bin/bash "$@"
+
+%test
+    sd_tmp=$(mktemp -d);
+    cp -vr /usr/local/tmp/ "$sd_tmp"
+    cd "${sd_tmp}/tmp/scripts/" && prove -v
+    if [ -d "$sd_tmp" ]; then rm -vrf "$sd_tmp"; fi
