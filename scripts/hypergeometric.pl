@@ -31,24 +31,6 @@ HELP
     exit;
 }
 
-#chromosomes='',
-#d_list=''
-#
-#in_directory='',averageFileName='',q_pos_list=[],numberOfPoints=0,currentTotalDepth=60e6, minDepth=30e6 , number_read_toCk=20,steps= int(10e6), min_accepted_prob=0.8, out_directory='',no_threads=8):
-
-#  in_directory = r'/group/sigsax_v2/Clean_data/Analysis_on_64MioFastQ/1_fromFastQ_toBAM/extra_1_genomecov/AlexMethod/3_averageTable/'
-#    averageFileName='result_averages.txt'
-#    out_directory= '/group/sigsax_v2/Clean_data/Analysis_on_64MioFastQ/1_fromFastQ_toBAM/extra_1_genomecov/AlexMethod/4_hypergeometric/'
-#    currentDepth = int(60e6)
-#    minDepth = int(30e6)
-#    number_read_toCk = int(20)
-#    steps = int(10e6)
-#    min_accepted_prob = 0.8
-#    q_pos_list = []
-#    numberOfPoints = 0
-#    d_list = list(range(int(minDepth), int(currentDepth), steps))
-
-
 my $start = time;
 our ($nproc,$verbose);
 my ($sfile,$rfile,$help,$chr,$currentTotalDepth,$minDepth,$numberReadtoCk,$steps,$minAcceptedProb);
@@ -144,10 +126,6 @@ sub collect_uniq_vals_from_{
     return @uniqvals if @uniqvals;
     return;
 }
-
-#my $destdir = '/tmp';
-#my $result_file = "${destdir}/result_hyper.txt";
-#my $rd = write_f($result_file,$compression);
 
 my $fd = read_f($sfile);
 my @uniqvals = collect_uniq_vals_from_($sfile);
