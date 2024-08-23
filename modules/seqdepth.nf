@@ -188,6 +188,6 @@ process hyperGeometricSort{
     script:
     """
     zcat ${chr_id}/hypergeometric_unsorted.txt.gz | sort -nk 2 | pigz -p 4 > ${chr_id}/hypergeometric.txt.gz
-    #rm -v ${chr_id}/hypergeometric_unsorted.txt.gz
+    rm -v ${chr_id}/hypergeometric_unsorted.txt.gz
     """
 }
