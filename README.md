@@ -56,7 +56,7 @@ Example:
 
 ```
 mkdir /tmp/plot
-singularity exec -B $PWD containers/seqdepth.sif Rscript scripts/plotting.r --crm 19 --position 51417359 --datadir "results/hypergeometric/" -t hypergeom --outputdir /tmp/plot
+singularity exec -B $PWD containers/seqdepth.sif Rscript scripts/plotting.r --crm 19 --positionlist 51417359,51417369 --datadir "results/hypergeometric/" -t hypergeom --outputdir /tmp/plot
 ```
 
 
