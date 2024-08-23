@@ -2,15 +2,15 @@
 # merge bed files by postion field and build table
 # needed to calculate median or hypergeometric for
 # every position
-# Problem: we have number of bed files with 24 chromosomes
-# File structure is <chromosome> <position> <read value>
-# we need to collect values for every position in all files,
-# however positions in every file are sorted, however the ranges of positions
-# are not continuous, have gaps and do not match between files
-# The solution used in this code is a corner case of a MapReduce algorithm
-# samples located in a directory are divided in pairs and every pair of files
-# is merged into a new file, the files without a pair ( single files) are
-# saved for the further processing.
+# Problem: we have a number of bed files containing 24 chromosomes.
+# The file structure is <chromosome> <position> <read value>.
+# We need to collect values for every position across all files;
+# however, the positions in each file are sorted, while the ranges of positions
+# are not continuous, contain gaps, and do not match between files.
+# The solution used in this code is a corner case of a MapReduce algorithm.
+# Samples located in a directory are divided into pairs, and each pair of files
+# is merged into a new file. The files without a pair (single files) are
+# saved for further processing.
 use 5.10.0;
 use strict;
 use warnings;
