@@ -37,8 +37,8 @@ Options:
         -c CRM, --crm=CRM
                 Chromosome
 
-        -p POSITION, --position=POSITION
-                Chromosome position
+        -p POSITIONLIST, --positionlist=POSITIONLIST
+                Comma separated list of chromosome positions
 
         -m DATADIR, --datadir=DATADIR
                 Directory with median files per chromosome
