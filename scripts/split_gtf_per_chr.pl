@@ -33,4 +33,3 @@ while (my $line = <$fd>) {
             or die "Error writing file $result_file: $!\n";
         print $afd $line;
 }
-
