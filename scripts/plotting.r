@@ -3,7 +3,7 @@ library(optparse)
 option_list <- list(
 make_option(c("-c", "--crm"), type = "character", default = "Y", help = "Chromosome"),
 make_option(c("-p", "--positionlist"), type = "character", default = "None", help = "Comma separated list of chromosome positions"),
-make_option(c("-m", "--datadir"), type = "character", default = "None", help = "Directory with median files per chromosome"),
+make_option(c("-m", "--datadir"), type = "character", default = "None", help = "Directory with hypergeometric data"),
 make_option(c("-o", "--outputdir"), type = "character", default = "/tmp/plotX", help = "Directory for the result plot"),
 make_option(c("-t", "--type"), type = "character", default = "median", help = "DataType - median or hypergeom")
 )
@@ -73,6 +73,8 @@ print(paste('Number of reads : ',sum(dt$D), sep='')) # print number of rows
 print(paste('Number of distinct reads : ',sum(unique(dt$D)), sep='')) # print number of rows
 
 if (dataType=='hypergeom'){
+        print(paste('Number of reads : ',sum(dt$D), sep='')) # print number of rows
+        print(paste('Number of distinct reads : ',sum(unique(dt$D)), sep='')) # print number of rows
         print(paste('Number of predicted reads : ',sum(dt$ED), sep='')) # print number of rows
         print(paste('Number of predicted distinct reads : ',sum(unique(dt$ED)), sep='')) # print number of rows
 }
@@ -102,21 +104,35 @@ if (dataType=='median'){
 }
 
 if (dataType=='hypergeom'){
+        spots=subset(dt,BP %in% positions)
         dt=subset(dt, ED>0) # remove the zero rows
         dt$ED=log10(dt$ED+1)
+        dt$D=log10(dt$D+1)
+        spots$D=log10(spots$D+1)
+        spots$ED=log10(spots$ED+1)
 
-        spots=subset(dt,BP==position)
-        if (length(spots$ED) == 0){
-                stop (paste ('No ED value for BP:', position))
-        }
+#        if (length(spots$ED) == 0){
+#                stop (paste ('No ED value for BP:', position))
+#       }
         spots$info=paste(spots$BP,'(',spots$ED,')',sep='')
 
         ## The user can specify postions on that chromosome to plot
+# median only plot
+        png(paste('manhattenPlot_median_',crm,'.png',sep='')) # save the resuls in a pdf
+        p <-ggplot(dt, aes(BP,D, color = D, alpha = 0.4),label=info)+
+                geom_point(shape = 16, size = 1, show.legend = FALSE)+geom_point(data=spots, aes(BP,D, color = D, alpha = 0.4),color='red',alpha =1, size=2) +
+                theme_minimal() + scale_color_gradient(low = "#32aeff", high = "#f2aeff") +
+#                scale_alpha(range = c(.25, .6))+geom_text_repel(data=spots,aes(BP,D, color = Pty,label=info),hjust=0, vjust=0,color='black',alpha =2.7,  size=30,angle = 0,max.overlaps=100)+
+                scale_alpha(range = c(.25, .6))+
+                        scale_x_continuous(name="Base position", labels = comma,limits = c(0, max_pos))+  scale_y_continuous(name="Log10 (depth)")
+                print(p +ggtitle(paste('Chromosome: ',crm, sep=''))+theme(plot.title = element_text(hjust = 0.5))+ geom_hline(yintercept=log10(20), linetype="dashed", color = "green")+ geom_hline(yintercept=log10(5), linetype="dashed", color = "green"))
+                dev.off() # save the pdf file
 
-        png(paste('manhattenPlot_chrom_3Figs_4_',crm,'.png',sep='')) # save the resuls in a pdf
+# hypergeom only plot
+        png(paste('manhattenPlot_hypergeom_',crm,'.png',sep='')) # save the resuls in a pdf
         # plot
         p <-ggplot(dt, aes(BP,ED, color = ED, alpha = 0.4),label=BP)+
-                geom_point(shape = 16, size = 1, show.legend = FALSE)+geom_point(data=spots, aes(BP,ED, color = ED, alpha =0.4),color='red',alpha =1, size=1)+
+                geom_point(shape = 16, size = 1, show.legend = FALSE)+geom_point(data=spots, aes(BP,ED, color = ED, alpha =0.4),color='red',alpha =1, size=2)+
                 theme_minimal() + scale_color_gradient(low = "#32aeff", high = "#f2aeff") +
                 scale_alpha(range = c(.25, .6))+
                         scale_x_continuous(name="Base position", labels = comma,limits = c(0, max_pos))+  scale_y_continuous(name="log10(Expected Depth)")
