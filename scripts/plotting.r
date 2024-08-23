@@ -2,8 +2,8 @@ library(optparse)
 # Define options
 option_list <- list(
 make_option(c("-c", "--crm"), type = "character", default = "Y", help = "Chromosome"),
-make_option(c("-p", "--position"), type = "character", default = "None", help = "Chromosome position"),
-make_option(c("-m", "--datadir"), type = "character", default = "/group/bioinf_tmp/users/alex/SeqDepth/workflow_results_minap_07/median/", help = "Directory with median files per chromosome"),
+make_option(c("-p", "--positionlist"), type = "character", default = "None", help = "Comma separated list of chromosome positions"),
+make_option(c("-m", "--datadir"), type = "character", default = "None", help = "Directory with median files per chromosome"),
 make_option(c("-o", "--outputdir"), type = "character", default = "/tmp/plotX", help = "Directory for the result plot"),
 make_option(c("-t", "--type"), type = "character", default = "median", help = "DataType - median or hypergeom")
 )
@@ -13,17 +13,18 @@ opt_parser <- OptionParser(option_list = option_list)
 opt <- parse_args(opt_parser)
 
 # Access the arguments
-cat("Chromosome:", opt$crm, "\n")
-cat("datadir:", opt$datadir, "\n")
-cat("outputDir:", opt$outputdir, "\n")
+#cat("Chromosome:", opt$crm, "\n")
+#cat("datadir:", opt$datadir, "\n")
+#cat("outputDir:", opt$outputdir, "\n")
+#cat("positionlist:", opt$positionlist, "\n")
 
 datadir <- opt$datadir
 crm <- opt$crm
 outdir <- opt$outputdir
-position <- opt$position
+positions <- strsplit(opt$positionlist,",")[[1]]
 dataType <- opt$type
 
-stopifnot(position >0)
+stopifnot(positions[1] >0)
 
 ## set working directory
 setwd(outdir)
@@ -77,20 +78,21 @@ if (dataType=='hypergeom'){
 }
 
 if (dataType=='median'){
-        spots=subset(dt,BP==position)
-        if (length(spots$D) == 0){
-                stop (paste ('No D value for BP:', position))
-        }
+        spots=subset(dt,BP %in% positions)
+        print (spots)
+#        if (length(spots$D) == 0){
+#                stop (paste ('No D value for BP:'))
+#        }
         spots$info=paste(spots$BP,'(',spots$D,')',sep='')
 
         ##log10
         dt$D=log10(dt$D+1)
         spots$D=log10(spots$D+1)
-        print (paste('spotsdD = ',spots$D))
+        #print (paste('spotsdD = ',spots$D))
 
         png(paste('manhattenPlot_chrom_4Figs_1_',crm,'.png',sep='')) # save the resuls in a pdf
         p <-ggplot(dt, aes(BP,D, color = D, alpha = 0.4),label=info)+
-                geom_point(shape = 16, size = 1, show.legend = FALSE)+geom_point(data=spots, aes(BP,D, color = D, alpha = 0.4),color='red',alpha =1, size=1) +
+                geom_point(shape = 16, size = 1, show.legend = FALSE)+geom_point(data=spots, aes(BP,D, color = D, alpha = 0.4),color='red',alpha =1, size=2) +
                 theme_minimal() + scale_color_gradient(low = "#32aeff", high = "#f2aeff") +
 #                scale_alpha(range = c(.25, .6))+geom_text_repel(data=spots,aes(BP,D, color = Pty,label=info),hjust=0, vjust=0,color='black',alpha =2.7,  size=30,angle = 0,max.overlaps=100)+
                 scale_alpha(range = c(.25, .6))+
